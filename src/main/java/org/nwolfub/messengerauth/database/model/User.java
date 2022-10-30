@@ -1,6 +1,9 @@
-package org.nwolfub.messengerauth.model;
+package org.nwolfub.messengerauth.database.model;
+
+import org.nwolfub.messengerauth.Utils;
 
 import javax.persistence.*;
+import javax.xml.bind.DatatypeConverter;
 import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -34,8 +37,11 @@ public class User implements Serializable {
     public User(String username, String password) {
         this.username = username;
         try {
+            this.salt1 = Utils.generateString(30);
+            this.salt2 = Utils.generateString(30);
+            String prePasswd = salt1 + password + salt2;
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            digest.digest();
+            this.password = DatatypeConverter.printBase64Binary(digest.digest(prePasswd.getBytes()));
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
