@@ -5,6 +5,7 @@ import org.nwolfub.messengerauth.database.HibernateController;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,6 +18,7 @@ import java.util.Properties;
 @ComponentScan(basePackageClasses = HibernateController.class)
 public class DatabaseConfigurator {
     @Bean(name = "hibernate")
+    @Primary
     public Properties getHibernateProperties() {
         String url = "";
         String username = "";
