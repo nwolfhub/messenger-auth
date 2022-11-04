@@ -31,6 +31,8 @@ public class DatabaseConfigurator {
             File f = new File("dbinfo.cfg");
             try {
                 f.createNewFile();
+                System.out.println("Please fill dbinfo.cfg");
+                System.exit(0);
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
