@@ -15,8 +15,7 @@ public class UserDao implements Dao {
 
     public UserDao() {
         ApplicationContext context = new AnnotationConfigApplicationContext(DatabaseConfigurator.class);
-        //controller = new HibernateController((Properties) context.getBean("hibernateProperties"));
-        controller = context.getBean("hibernate", HibernateController.class);
+        controller = context.getBean("hibernate", HibernateController.class); //this spring solution seem to work fine so i am going with it
     }
     @Override
     public Object get(Integer id) {

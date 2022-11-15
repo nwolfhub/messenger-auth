@@ -42,8 +42,9 @@ public class User implements Serializable {
             String prePasswd = salt1 + password + salt2;
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             this.password = DatatypeConverter.printBase64Binary(digest.digest(prePasswd.getBytes()));
+            this.username=username;
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Failed to create uer:" + e);
         }
     }
 
