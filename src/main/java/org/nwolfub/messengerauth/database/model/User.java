@@ -9,7 +9,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users", schema = "users")
 public class User implements Serializable {
 
     public static MessageDigest digest;
@@ -23,7 +23,7 @@ public class User implements Serializable {
     }
 
     @Id
-    @SequenceGenerator(name = "uidGen", sequenceName = "id_increaser", allocationSize = 1)
+    @SequenceGenerator(name = "uidGen", sequenceName = "users.id_increaser", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "uidGen")
     public Integer id;
 
@@ -31,6 +31,7 @@ public class User implements Serializable {
     public String password;
     public String salt1;
     public String salt2;
+    public boolean banned;
 
     public User() {}
 
@@ -42,6 +43,7 @@ public class User implements Serializable {
             String prePasswd = salt1 + password + salt2;
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             this.password = DatatypeConverter.printBase64Binary(digest.digest(prePasswd.getBytes()));
+            this.banned = false;
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
@@ -65,12 +67,14 @@ public class User implements Serializable {
         return this;
     }
 
-    private String getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    private User setPassword(String password) {
-        this.password = password;
+    public User setPassword(String password) throws NoSuchAlgorithmException {
+        String prePasswd = salt1 + password + salt2;
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        this.password = DatatypeConverter.printBase64Binary(digest.digest(prePasswd.getBytes()));
         return this;
     }
 
@@ -91,4 +95,5 @@ public class User implements Serializable {
         this.salt2 = salt2;
         return this;
     }
+
 }

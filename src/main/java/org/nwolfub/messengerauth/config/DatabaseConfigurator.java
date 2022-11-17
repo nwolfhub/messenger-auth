@@ -17,7 +17,7 @@ import java.util.Properties;
 @Configuration
 @ComponentScan(basePackageClasses = HibernateController.class)
 public class DatabaseConfigurator {
-    @Bean(name = "hibernate")
+    @Bean(name = "hibernateProperties")
     @Primary
     public Properties getHibernateProperties() {
         String url = "";

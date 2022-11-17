@@ -1,6 +1,8 @@
 package org.nwolfub.messengerauth.database;
 
 import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import org.nwolfub.messengerauth.config.DatabaseConfigurator;
 import org.nwolfub.messengerauth.database.model.Dao;
 import org.nwolfub.messengerauth.database.model.User;
@@ -16,7 +18,12 @@ public class UserDao implements Dao {
     public UserDao() {
         ApplicationContext context = new AnnotationConfigApplicationContext(DatabaseConfigurator.class);
         //controller = new HibernateController((Properties) context.getBean("hibernateProperties"));
-        controller = context.getBean("hibernate", HibernateController.class);
+        controller = new HibernateController(context.getBean("hibernateProperties", Properties.class));
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
     @Override
     public Object get(Integer id) {
@@ -24,6 +31,12 @@ public class UserDao implements Dao {
         User obj = session.get(User.class, id);
         session.close();
         return obj;
+    }
+    public Object get (String username) {
+        Session session = controller.getSessionFactory().openSession();
+        Query query = session.createQuery("from User where username=:username")
+                .setParameter("username", username);
+        return query.uniqueResult();
     }
 
     public User getUser(Integer id) {
@@ -33,21 +46,27 @@ public class UserDao implements Dao {
     @Override
     public void save(Object obj) {
         Session session = controller.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
         session.save(obj);
+        transaction.commit();
         session.close();
     }
 
     @Override
     public void update(Object obj) {
         Session session = controller.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
         session.update(obj);
+        transaction.commit();
         session.close();
     }
 
     @Override
     public void delete(Object obj) {
         Session session = controller.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
         session.delete(obj);
+        transaction.commit();
         session.close();
     }
 
