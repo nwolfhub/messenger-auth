@@ -96,4 +96,14 @@ public class User implements Serializable {
         return this;
     }
 
+    public boolean validatePassword(String password) {
+        String prePasswd = salt1 + password + salt2;
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            return DatatypeConverter.printBase64Binary(digest.digest(prePasswd.getBytes())).equals(this.password);
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

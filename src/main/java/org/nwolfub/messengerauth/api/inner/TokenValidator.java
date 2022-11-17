@@ -22,8 +22,8 @@ public class TokenValidator {
         System.out.println("Initialized token validator!");
     }
 
-    public static  validationResult validateToken(String token)
-
+    public static  validationResult validateToken(String token) {
+        return null;
     }
 
     public static class validationResult  {
