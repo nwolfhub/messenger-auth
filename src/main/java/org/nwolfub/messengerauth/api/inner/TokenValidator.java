@@ -1,17 +1,12 @@
 package org.nwolfub.messengerauth.api.inner;
 
-import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.context.event.EventListener;
-import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
 import java.util.Random;
 
 public class TokenValidator {
     private static String randomString;
     private static String[] symbols = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".split("");
 
-//    token format: userId:hash(userid + protectString )
+//    token format: userId:hash(userid + protectString);till:hash(till + protectString)
     public static void initialize() {
         Random r = new Random();
         StringBuilder randomBuilder = new StringBuilder();
@@ -22,17 +17,22 @@ public class TokenValidator {
         System.out.println("Initialized token validator!");
     }
 
-    public static  validationResult validateToken(String token) {
-        return null;
+    public static ValidationResult validateToken(String token) {
+        try {
+            String firstPart = token.split(";")[0];
+            String secondPart = token.split(";")[1];
+            String uid = firstPart.split(":")[0];
+            String time = secondPart.split(":")[0];
+        }
     }
 
-    public static class validationResult  {
+    public static class ValidationResult {
         public boolean ok;
         public Integer user;
 
-        public validationResult() {}
+        public ValidationResult() {}
 
-        public validationResult(boolean ok, Integer user) {
+        public ValidationResult(boolean ok, Integer user) {
             this.ok = ok;
             this.user = user;
         }
@@ -41,7 +41,7 @@ public class TokenValidator {
             return ok;
         }
 
-        public validationResult setOk(boolean ok) {
+        public ValidationResult setOk(boolean ok) {
             this.ok = ok;
             return this;
         }
@@ -50,7 +50,7 @@ public class TokenValidator {
             return user;
         }
 
-        public validationResult setUser(Integer user) {
+        public ValidationResult setUser(Integer user) {
             this.user = user;
             return this;
         }
