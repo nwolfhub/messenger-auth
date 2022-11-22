@@ -25,7 +25,7 @@ public class Utils {
     public static HashMap<String, String> parseValues(String[] text) {
         HashMap<String, String> map = new HashMap<>();
         for (String record:text) {
-            if(record.split("")[0].equals("#")) {
+            if(!record.split("")[0].equals("#")) {
                 if (record.contains("=")) {
                     map.put(record.split("=")[0], record.split("=")[1]);
                 }

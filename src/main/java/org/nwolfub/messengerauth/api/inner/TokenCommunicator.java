@@ -8,17 +8,17 @@ import java.io.IOException;
 
 @Component
 public class TokenCommunicator {
-    @Autowired
-    private RedisConnectionData data;
+    @Autowired(required = true)
+    private RedisConnectionData redisData;
     private Jedis jedis;
 
-    public TokenCommunicator() throws RedisNotUsedException, IOException {
-        if(!data.useRedis) {
-            throw new RedisNotUsedException("Redis is not used in this project");
+    public TokenCommunicator(RedisConnectionData redisData) throws RedisNotUsedException, IOException {
+        this.redisData = redisData;
+        if(!this.redisData.useRedis) {
         }
         else {
-            jedis = new Jedis(data.getUrl(), data.getPort());
-            if(data.isUsePassword()) jedis.auth(data.getPassword());
+            jedis = new Jedis(this.redisData.getUrl(), this.redisData.getPort());
+            if(this.redisData.isUsePassword()) jedis.auth(this.redisData.getPassword());
             if(!jedis.isConnected()) throw new IOException("Could not connect to redis server!");
             System.out.println("Jedis up and running!");
         }

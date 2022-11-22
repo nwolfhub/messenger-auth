@@ -22,11 +22,10 @@ public class DatabaseConfigurator {
     private static HashMap<String, String> data;
 
 
-    private static boolean read() {
+    private boolean read() {
         try (FileInputStream in = new FileInputStream("auth.cfg")) {
             String input = new String(in.readAllBytes());
-            data = Utils.parseValues(input, "\n");
-            System.out.println("Finished reading data");
+            data = Utils.parseValues(input.split("\n"));
             in.close();
             return true;
         } catch (FileNotFoundException e) {
@@ -64,8 +63,9 @@ public class DatabaseConfigurator {
         else throw new RuntimeException("Could not read config file!");
     }
 
-    @Bean
-    public static TokenCommunicator.RedisConnectionData redisConnectionData() {
+    @Bean(name = "redisData")
+    @Primary
+    public TokenCommunicator.RedisConnectionData redisConnectionData() {
         try {
             if (read()) {
                 if (data.containsKey("use_redis")) {
@@ -76,7 +76,7 @@ public class DatabaseConfigurator {
                         String password = null;
                         String usePassword = data.get("redis_use_password");
                         if(usePassword!=null && usePassword.equals("true")) password = data.get("redis_password");
-                        return new TokenCommunicator.RedisConnectionData().setUseRedis(true).setUrl(url).setPort(port).setUsePassword(password==null).setPassword(password);
+                        return new TokenCommunicator.RedisConnectionData().setUseRedis(true).setUrl(url).setPort(port).setUsePassword(password!=null).setPassword(password);
                     }
                 }
             }
