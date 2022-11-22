@@ -14,6 +14,9 @@ db_password=
 
 #optional
 
+#redis
 use_redis=true/false
+redis_url=
+redis_port=
 redis_password=
 ```
