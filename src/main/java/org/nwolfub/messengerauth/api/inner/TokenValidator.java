@@ -6,7 +6,7 @@ public class TokenValidator {
     private static String randomString;
     private static String[] symbols = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".split("");
 
-//    token format: userId:hash(userid + protectString);till:hash(till + protectString)
+//    token format: userId:hash(userid + protectString);id:hash(id + protectString)
     public static void initialize() {
         Random r = new Random();
         StringBuilder randomBuilder = new StringBuilder();
@@ -17,14 +17,6 @@ public class TokenValidator {
         System.out.println("Initialized token validator!");
     }
 
-    public static ValidationResult validateToken(String token) {
-        try {
-            String firstPart = token.split(";")[0];
-            String secondPart = token.split(";")[1];
-            String uid = firstPart.split(":")[0];
-            String time = secondPart.split(":")[0];
-        }
-    }
 
     public static class ValidationResult {
         public boolean ok;

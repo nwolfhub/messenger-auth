@@ -1,6 +1,7 @@
 package org.nwolfub.messengerauth.config;
 
 import org.nwolfub.messengerauth.Utils;
+import org.nwolfub.messengerauth.api.inner.TokenCommunicator;
 import org.nwolfub.messengerauth.database.HibernateController;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -15,44 +16,72 @@ import java.util.HashMap;
 import java.util.Properties;
 
 @Configuration
-@ComponentScan(basePackageClasses = HibernateController.class)
+@ComponentScan(basePackageClasses = {HibernateController.class, TokenCommunicator.class})
 public class DatabaseConfigurator {
-    @Bean(name = "hibernateProperties")
-    @Primary
-    public Properties getHibernateProperties() {
-        String url = "";
-        String username = "";
-        String password = "";
-        try (FileInputStream in = new FileInputStream("dbinfo.cfg")) {
+
+    private static HashMap<String, String> data;
+
+
+    private static boolean read() {
+        try (FileInputStream in = new FileInputStream("auth.cfg")) {
             String input = new String(in.readAllBytes());
-            HashMap<String, String> values = Utils.parseValues(input, "\n");
-            url = values.get("url");
-            username = values.get("username");
-            password = values.get("password");
+            data = Utils.parseValues(input, "\n");
+            System.out.println("Finished reading data");
+            in.close();
+            return true;
         } catch (FileNotFoundException e) {
-            File f = new File("dbinfo.cfg");
+            File f = new File("auth.cfg");
             try {
                 f.createNewFile();
-                System.out.println("Please fill dbinfo.cfg");
-                System.exit(0);
+                System.out.println("Please fill auth.cfg");
             } catch (IOException ex) {
-                throw new RuntimeException(ex);
+                ex.printStackTrace();
             }
             throw new RuntimeException(e);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
-        Properties prop = new Properties();
-        prop.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQL95Dialect");
-        prop.put("hibernate.connection.driver_class", "org.postgresql.Driver");
-        prop.put("hibernate.connection.url", url);
-        prop.put("hibernate.connection.username", username);
-        prop.put("hibernate.connection.password", password);
-        prop.put("hibernate.current_session_context_class", "thread");
-        prop.put("hibernate.connection.CharSet", "utf8");
-        prop.put("hibernate.connection.characterEncoding", "utf8");
-        prop.put("hibernate.connection.useUnicode", true);
-        prop.put("hibernate.connection.pool_size", 100);
-        return prop;
+        return false;
+    }
+
+    @Bean(name = "hibernateProperties")
+    @Primary
+    public Properties getHibernateProperties() {
+        if(read()) {
+            Properties prop = new Properties();
+            prop.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQL95Dialect");
+            prop.put("hibernate.connection.driver_class", "org.postgresql.Driver");
+            prop.put("hibernate.connection.url", data.get("db_url"));
+            prop.put("hibernate.connection.username", data.get("db_username"));
+            prop.put("hibernate.connection.password", data.get("db_password"));
+            prop.put("hibernate.current_session_context_class", "thread");
+            prop.put("hibernate.connection.CharSet", "utf8");
+            prop.put("hibernate.connection.characterEncoding", "utf8");
+            prop.put("hibernate.connection.useUnicode", true);
+            prop.put("hibernate.connection.pool_size", 100);
+            return prop;
+        }
+        else throw new RuntimeException("Could not read config file!");
+    }
+
+    @Bean
+    public static TokenCommunicator.RedisConnectionData redisConnectionData() {
+        try {
+            if (read()) {
+                if (data.containsKey("use_redis")) {
+                    boolean use_redis = Boolean.parseBoolean(data.get("use_redis"));
+                    if (use_redis) {
+                        String url = data.get("redis_url");
+                        Integer port = Integer.valueOf(data.get("redis_port"));
+                        String password = null;
+                        String usePassword = data.get("redis_use_password");
+                        if(usePassword!=null && usePassword.equals("true")) password = data.get("redis_password");
+                        return new TokenCommunicator.RedisConnectionData().setUseRedis(true).setUrl(url).setPort(port).setUsePassword(password==null).setPassword(password);
+                    }
+                }
+            }
+        } catch (Exception ignored) {}
+        System.out.println("Warning! Redis will not be used!");
+        return new TokenCommunicator.RedisConnectionData().setUseRedis(false);
     }
 }
