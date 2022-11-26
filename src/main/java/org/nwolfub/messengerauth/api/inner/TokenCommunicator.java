@@ -8,13 +8,18 @@ import java.io.IOException;
 
 @Component
 public class TokenCommunicator {
-    @Autowired(required = true)
+
+    @Autowired
     private RedisConnectionData redisData;
+
+    public boolean isUsed = true;
+
     private Jedis jedis;
 
-    public TokenCommunicator(RedisConnectionData redisData) throws RedisNotUsedException, IOException {
+    public TokenCommunicator(RedisConnectionData redisData) throws IOException {
         this.redisData = redisData;
         if(!this.redisData.useRedis) {
+            isUsed = false;
         }
         else {
             jedis = new Jedis(this.redisData.getUrl(), this.redisData.getPort());
@@ -22,6 +27,13 @@ public class TokenCommunicator {
             if(!jedis.isConnected()) throw new IOException("Could not connect to redis server!");
             System.out.println("Jedis up and running!");
         }
+    }
+
+    public String get(String key) {
+        return jedis.get(key);
+    }
+    public void set(String key, String val) {
+        jedis.set(key, val);
     }
 
     public static class RedisNotUsedException extends Exception {
