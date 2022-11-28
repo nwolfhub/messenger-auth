@@ -29,11 +29,10 @@ public class TokenCommunicator {
         }
     }
 
-    public String get(String key) {
-        return jedis.get(key);
-    }
-    public void set(String key, String val) {
-        jedis.set(key, val);
+    public String auth(String token) {
+        if(redisData.useRedis) {
+            String user = jedis.get(token);
+        }
     }
 
     public static class RedisNotUsedException extends Exception {
