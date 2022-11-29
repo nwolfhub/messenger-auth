@@ -1,5 +1,6 @@
 package org.nwolfub.messengerauth.api.inner;
 
+import org.nwolfub.messengerauth.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
@@ -32,6 +33,12 @@ public class TokenCommunicator {
         }
     }
 
+    /**
+     * Looking for user who owns token
+     * @param token user's token
+     * @return id of a user
+     * @throws NullPointerException in case token is not found
+     */
     public Integer auth(String token) throws NullPointerException{
         if(redisData.useRedis) {
             return Integer.valueOf(jedis.get(token));
@@ -42,6 +49,21 @@ public class TokenCommunicator {
     }
     public void test() {
         jedis.set("test", "test");
+    }
+
+    /**
+     * Provides a newly generated token. If redis is not used same user will have same token while randomstring is not changed
+     * @param userId -  id of a user to generate token for
+     * @return generated token
+     */
+    public String makeToken(Integer userId) {
+        if(redisData.useRedis) {
+           String token = "NWOLF" + Utils.generateString(50) + "HUB";
+           jedis.set(token, userId.toString());
+           return token;
+        } else {
+            return TokenValidator.makeToken(userId);
+        }
     }
 
     public static class RedisNotUsedException extends Exception {

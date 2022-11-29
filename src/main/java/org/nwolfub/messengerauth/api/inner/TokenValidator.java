@@ -54,6 +54,10 @@ public class TokenValidator {
         return DatatypeConverter.printBase64Binary(digest.digest(string.getBytes()));
     }
 
+    public static String makeToken(Integer userId) {
+        return userId + hash(userId + randomString);
+    }
+
 
     public static class ValidationResult {
         public boolean ok;
