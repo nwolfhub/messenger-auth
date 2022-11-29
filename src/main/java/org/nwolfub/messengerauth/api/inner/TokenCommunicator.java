@@ -3,6 +3,7 @@ package org.nwolfub.messengerauth.api.inner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 import java.io.IOException;
 
@@ -22,7 +23,9 @@ public class TokenCommunicator {
             isUsed = false;
         }
         else {
-            jedis = new Jedis(this.redisData.getUrl(), this.redisData.getPort());
+            JedisPool pool = new JedisPool(this.redisData.getUrl(), this.redisData.getPort());
+            //jedis = new Jedis(this.redisData.getUrl(), this.redisData.getPort());
+            jedis = pool.getResource();
             if(this.redisData.isUsePassword()) jedis.auth(this.redisData.getPassword());
             if(!jedis.isConnected()) throw new IOException("Could not connect to redis server!");
             System.out.println("Jedis up and running!");
