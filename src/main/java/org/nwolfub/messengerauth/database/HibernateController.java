@@ -4,6 +4,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.nwolfub.messengerauth.database.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Properties;
@@ -11,6 +12,8 @@ import java.util.Properties;
 @Component
 public class HibernateController {
     private SessionFactory sessionFactory;
+
+    @Autowired
     private Properties properties;
 
     public HibernateController(Properties properties) {

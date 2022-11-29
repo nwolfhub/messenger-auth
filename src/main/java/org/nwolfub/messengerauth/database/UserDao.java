@@ -18,7 +18,7 @@ public class UserDao implements Dao {
     public UserDao() {
         ApplicationContext context = new AnnotationConfigApplicationContext(DatabaseConfigurator.class);
         //controller = new HibernateController((Properties) context.getBean("hibernateProperties"));
-        controller = new HibernateController(context.getBean("hibernateProperties", Properties.class));
+        controller = context.getBean(HibernateController.class);
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {

@@ -40,6 +40,9 @@ public class TokenCommunicator {
             if(result.isOk()) return result.getUser(); else throw new NullPointerException("Token not found!");
         }
     }
+    public void test() {
+        jedis.set("test", "test");
+    }
 
     public static class RedisNotUsedException extends Exception {
         public RedisNotUsedException(String text) {
