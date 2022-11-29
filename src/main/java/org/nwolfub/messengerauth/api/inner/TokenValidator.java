@@ -41,9 +41,8 @@ public class TokenValidator {
             if(uHash.equals(token.split(":")[1])) {
                 return new ValidationResult(true, userId);
             }
-        } catch (Exception e) {
-            return new ValidationResult(false, null);
-        }
+        } catch (Exception ignored) {}
+        return new ValidationResult(false, null);
     }
 
     /**

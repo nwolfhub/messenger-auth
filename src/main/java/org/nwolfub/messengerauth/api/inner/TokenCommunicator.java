@@ -29,9 +29,12 @@ public class TokenCommunicator {
         }
     }
 
-    public String auth(String token) {
+    public Integer auth(String token) throws NullPointerException{
         if(redisData.useRedis) {
-            String user = jedis.get(token);
+            return Integer.valueOf(jedis.get(token));
+        } else {
+            TokenValidator.ValidationResult result = TokenValidator.validateToken(token);
+            if(result.isOk()) return result.getUser(); else throw new NullPointerException("Token not found!");
         }
     }
 
