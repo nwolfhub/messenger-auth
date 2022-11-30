@@ -21,7 +21,7 @@ public class AuthController {
     private static TokenCommunicator tokenCommunicator = new AnnotationConfigApplicationContext(DatabaseConfigurator.class).getBean(TokenCommunicator.class);
     private static UserDao dao = new UserDao();
 
-    @GetMapping(name = "/auth/login")
+    @GetMapping("/auth/login")
     public static ResponseEntity<String> login(@RequestParam(name = "username", defaultValue = "") String username, @RequestParam(name = "password", defaultValue = "") String password, @RequestHeader(value = "X-Forwarded-For", defaultValue = "0.0.0.0") String ip) {
         if(ip.equals("0.0.0.0")) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(JsonBuilder.loginResponse(false, "", "Direct connections are not allowed"));
         if(limitController.isAllowed(ip)) {
@@ -43,7 +43,7 @@ public class AuthController {
         } else return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body(JsonBuilder.loginResponse(false, "", "Too many requests from this IP"));
     }
 
-    @GetMapping(name = "/auth/register")
+    @GetMapping("/auth/register")
     public static ResponseEntity<String> register(@RequestParam(name = "username", defaultValue = "") String username, @RequestParam(name = "password", defaultValue = "") String password, @RequestHeader(value = "X-Forwarded-For", defaultValue = "0.0.0.0") String ip) {
         if(ip.equals("0.0.0.0")) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(JsonBuilder.loginResponse(false, "", "Direct connections are not allowed"));
         try {
