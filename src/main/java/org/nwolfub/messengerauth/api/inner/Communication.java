@@ -1,5 +1,7 @@
 package org.nwolfub.messengerauth.api.inner;
 
+import org.nwolfub.shared.DataUnit;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -19,23 +21,20 @@ public class Communication {
     }
 
     private static void talk(Socket socket) throws IOException {
-        Scanner in = new Scanner(socket.getInputStream());
-        PrintWriter out = new PrintWriter(socket.getOutputStream());
+        ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+        ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
         try {
-            out.println("From:");
+            out.writeObject(new DataUnit().setRequest("From:"));
             out.flush();
             String from = "";
-            String input = "";
+            DataUnit input = new DataUnit();
             boolean authed = false;
             while (socket.isConnected() && !authed) {
-                input = in.nextLine();
-                try {
-                    Source source = Source.valueOf(input);
-                } catch (Exception e) {}
+                input = (DataUnit) in.readObject(); //finish later
             }
         } catch (Exception e) {
             try {
-                out.println("Exception " + e + " occurred on auth server side. Goodbye");
+                out.writeObject(new DataUnit().setRequest("Exception " + e + " occurred on auth server side. Goodbye"));
                 socket.close();
                 in.close();
                 out.close();
