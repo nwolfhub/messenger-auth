@@ -1,10 +1,13 @@
 package org.nwolfub.messengerauth.api.inner;
 
 import org.nwolfub.messengerauth.Utils;
+import org.nwolfub.messengerauth.config.DatabaseConfigurator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.exceptions.JedisConnectionException;
 
 import java.io.IOException;
 
@@ -43,8 +46,24 @@ public class TokenCommunicator {
         if(redisData.useRedis) {
             return Integer.valueOf(jedis.get(token));
         } else {
+            try {
+                TokenValidator.ValidationResult result = TokenValidator.validateToken(token);
+                if (result.isOk()) return result.getUser();
+                else throw new NullPointerException("Token not found!");
+            } catch (JedisConnectionException e) {
+                JedisPool pool = new JedisPool(this.redisData.getUrl(), this.redisData.getPort());
+                jedis = pool.getResource();
+                return authNoRecursion(token);
+            }
+        }
+    }
+    private Integer authNoRecursion(String token) throws NullPointerException{
+        if(redisData.useRedis) {
+            return Integer.valueOf(jedis.get(token));
+        } else {
             TokenValidator.ValidationResult result = TokenValidator.validateToken(token);
-            if(result.isOk()) return result.getUser(); else throw new NullPointerException("Token not found!");
+            if (result.isOk()) return result.getUser();
+            else throw new NullPointerException("Token not found!");
         }
     }
     public void test() {
@@ -57,10 +76,26 @@ public class TokenCommunicator {
      * @return generated token
      */
     public String makeToken(Integer userId) {
-        if(redisData.useRedis) {
-           String token = "NWOLF" + Utils.generateString(50) + "HUB";
-           jedis.set(token, userId.toString());
-           return token;
+        try {
+            if (redisData.useRedis) {
+                String token = "NWOLF" + Utils.generateString(50) + "HUB";
+                jedis.set(token, userId.toString());
+                return token;
+            } else {
+                return TokenValidator.makeToken(userId);
+            }
+        } catch (JedisConnectionException e) {
+            JedisPool pool = new JedisPool(this.redisData.getUrl(), this.redisData.getPort());
+            jedis = pool.getResource();
+            return makeTokenNoRecursion(userId);
+        }
+    }
+
+    private String makeTokenNoRecursion(Integer userId) {
+        if (redisData.useRedis) {
+            String token = "NWOLF" + Utils.generateString(50) + "HUB";
+            jedis.set(token, userId.toString());
+            return token;
         } else {
             return TokenValidator.makeToken(userId);
         }
