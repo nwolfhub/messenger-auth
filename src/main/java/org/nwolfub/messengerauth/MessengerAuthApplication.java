@@ -12,8 +12,6 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class MessengerAuthApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(MessengerAuthApplication.class, args);
-		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(DatabaseConfigurator.class);
-
 	}
 
 }
