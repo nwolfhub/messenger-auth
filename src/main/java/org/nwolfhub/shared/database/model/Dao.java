@@ -1,4 +1,4 @@
-package org.nwolfub.messengerauth.database.model;
+package org.nwolfhub.shared.database.model;
 
 import java.util.List;
 

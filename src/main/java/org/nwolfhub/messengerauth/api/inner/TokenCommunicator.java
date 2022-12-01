@@ -1,9 +1,7 @@
-package org.nwolfub.messengerauth.api.inner;
+package org.nwolfhub.messengerauth.api.inner;
 
-import org.nwolfub.messengerauth.Utils;
-import org.nwolfub.messengerauth.config.DatabaseConfigurator;
+import org.nwolfhub.shared.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -59,6 +57,7 @@ public class TokenCommunicator {
     }
     private Integer authNoRecursion(String token) throws NullPointerException{
         if(redisData.useRedis) {
+
             return Integer.valueOf(jedis.get(token));
         } else {
             TokenValidator.ValidationResult result = TokenValidator.validateToken(token);
@@ -79,6 +78,15 @@ public class TokenCommunicator {
         try {
             if (redisData.useRedis) {
                 String token = "NWOLF" + Utils.generateString(50) + "HUB";
+                String userTokens = jedis.get(userId.toString());
+                if(userTokens == null) {
+                    userTokens = token;
+                } else if(userTokens.equals("")) {
+                    userTokens = token;
+                } else {
+                    userTokens = userTokens + ";" + token;
+                }
+                jedis.set(userId.toString(), userTokens);
                 jedis.set(token, userId.toString());
                 return token;
             } else {
@@ -94,6 +102,15 @@ public class TokenCommunicator {
     private String makeTokenNoRecursion(Integer userId) {
         if (redisData.useRedis) {
             String token = "NWOLF" + Utils.generateString(50) + "HUB";
+            String userTokens = jedis.get(userId.toString());
+            if(userTokens == null) {
+                userTokens = token;
+            } else if(userTokens.equals("")) {
+                userTokens = token;
+            } else {
+                userTokens = userTokens + ";" + token;
+            }
+            jedis.set(userId.toString(), userTokens);
             jedis.set(token, userId.toString());
             return token;
         } else {

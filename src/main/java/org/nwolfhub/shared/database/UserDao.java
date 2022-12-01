@@ -1,16 +1,15 @@
-package org.nwolfub.messengerauth.database;
+package org.nwolfhub.shared.database;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-import org.nwolfub.messengerauth.config.DatabaseConfigurator;
-import org.nwolfub.messengerauth.database.model.Dao;
-import org.nwolfub.messengerauth.database.model.User;
+import org.nwolfhub.messengerauth.config.DatabaseConfigurator;
+import org.nwolfhub.shared.database.model.Dao;
+import org.nwolfhub.shared.database.model.User;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import java.util.List;
-import java.util.Properties;
 
 public class UserDao implements Dao {
     private HibernateController controller;

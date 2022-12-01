@@ -1,6 +1,6 @@
-package org.nwolfub.messengerauth.database.model;
+package org.nwolfhub.shared.database.model;
 
-import org.nwolfub.messengerauth.Utils;
+import org.nwolfhub.shared.Utils;
 
 import javax.persistence.*;
 import javax.xml.bind.DatatypeConverter;

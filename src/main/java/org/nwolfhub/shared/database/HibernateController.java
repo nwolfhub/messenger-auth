@@ -1,9 +1,9 @@
-package org.nwolfub.messengerauth.database;
+package org.nwolfhub.shared.database;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
-import org.nwolfub.messengerauth.database.model.User;
+import org.nwolfhub.shared.database.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

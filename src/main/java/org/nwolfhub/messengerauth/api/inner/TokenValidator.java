@@ -1,4 +1,4 @@
-package org.nwolfub.messengerauth.api.inner;
+package org.nwolfhub.messengerauth.api.inner;
 
 import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;

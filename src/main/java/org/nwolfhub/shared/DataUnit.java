@@ -1,4 +1,4 @@
-package org.nwolfub.shared;
+package org.nwolfhub.shared;
 
 import java.io.Serializable;
 

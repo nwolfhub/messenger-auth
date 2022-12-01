@@ -1,4 +1,4 @@
-package org.nwolfub.messengerauth;
+package org.nwolfhub.messengerauth;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
