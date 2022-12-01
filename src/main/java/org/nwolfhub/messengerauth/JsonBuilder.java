@@ -1,4 +1,4 @@
-package org.nwolfub.messengerauth;
+package org.nwolfhub.messengerauth;
 
 public class JsonBuilder {
     public static String loginResponse(boolean ok, String token, String error) {

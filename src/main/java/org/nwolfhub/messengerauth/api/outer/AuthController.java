@@ -1,11 +1,11 @@
-package org.nwolfub.messengerauth.api.outer;
+package org.nwolfhub.messengerauth.api.outer;
 
-import org.nwolfub.messengerauth.JsonBuilder;
-import org.nwolfub.messengerauth.api.inner.TokenCommunicator;
-import org.nwolfub.messengerauth.config.DatabaseConfigurator;
-import org.nwolfub.messengerauth.database.UserDao;
-import org.nwolfub.messengerauth.database.model.User;
-import org.nwolfub.shared.LimitController;
+import org.nwolfhub.messengerauth.JsonBuilder;
+import org.nwolfhub.messengerauth.api.inner.TokenCommunicator;
+import org.nwolfhub.messengerauth.config.DatabaseConfigurator;
+import org.nwolfhub.messengerauth.database.UserDao;
+import org.nwolfhub.messengerauth.database.model.User;
+import org.nwolfhub.shared.LimitController;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

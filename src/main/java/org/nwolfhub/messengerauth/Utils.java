@@ -1,4 +1,4 @@
-package org.nwolfub.messengerauth;
+package org.nwolfhub.messengerauth;
 
 import java.util.HashMap;
 import java.util.Random;

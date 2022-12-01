@@ -1,9 +1,7 @@
-package org.nwolfub.messengerauth.api.inner;
+package org.nwolfhub.messengerauth.api.inner;
 
-import org.nwolfub.messengerauth.Utils;
-import org.nwolfub.messengerauth.config.DatabaseConfigurator;
+import org.nwolfhub.messengerauth.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
