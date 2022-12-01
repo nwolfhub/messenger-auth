@@ -1,8 +1,8 @@
 package org.nwolfhub.messengerauth.config;
 
-import org.nwolfhub.messengerauth.Utils;
+import org.nwolfhub.shared.Utils;
 import org.nwolfhub.messengerauth.api.inner.TokenCommunicator;
-import org.nwolfhub.messengerauth.database.HibernateController;
+import org.nwolfhub.shared.database.HibernateController;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

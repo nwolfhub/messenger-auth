@@ -1,11 +1,11 @@
-package org.nwolfhub.messengerauth.database;
+package org.nwolfhub.shared.database;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.nwolfhub.messengerauth.config.DatabaseConfigurator;
-import org.nwolfhub.messengerauth.database.model.Dao;
-import org.nwolfhub.messengerauth.database.model.User;
+import org.nwolfhub.shared.database.model.Dao;
+import org.nwolfhub.shared.database.model.User;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 

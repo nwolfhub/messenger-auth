@@ -1,6 +1,6 @@
 package org.nwolfhub.messengerauth.api.inner;
 
-import org.nwolfhub.messengerauth.Utils;
+import org.nwolfhub.shared.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
