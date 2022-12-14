@@ -21,3 +21,5 @@ redis_port=
 redis_use_password=true/false
 redis_password=
 ```
+## Used ports
+Http port: 8001
