@@ -55,6 +55,7 @@ public class DatabaseConfigurator {
             prop.put("hibernate.connection.password", data.get("db_password"));
             prop.put("hibernate.current_session_context_class", "thread");
             prop.put("hibernate.connection.CharSet", "utf8");
+            prop.put("hibernate.hbm2ddl.auto", "update");
             prop.put("hibernate.connection.characterEncoding", "utf8");
             prop.put("hibernate.connection.useUnicode", true);
             prop.put("hibernate.connection.pool_size", 100);
