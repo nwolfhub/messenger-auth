@@ -47,6 +47,11 @@
       <artifactId>jedis</artifactId>
       <version>4.3.1</version>
     </dependency>
+    <dependency>
+      <groupId>org.nwolfhub</groupId>
+      <artifactId>messenger-shared</artifactId>
+      <version>1.0</version>
+    </dependency>
   </dependencies>
 
   <build>

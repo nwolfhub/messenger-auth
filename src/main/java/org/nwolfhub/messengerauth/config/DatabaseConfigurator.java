@@ -3,6 +3,7 @@ package org.nwolfhub.messengerauth.config;
 import org.nwolfhub.shared.Utils;
 import org.nwolfhub.messengerauth.api.inner.TokenCommunicator;
 import org.nwolfhub.shared.database.HibernateController;
+import org.nwolfhub.shared.database.UserDao;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -83,5 +84,10 @@ public class DatabaseConfigurator {
         } catch (Exception ignored) {}
         System.out.println("Warning! Redis will not be used!");
         return new TokenCommunicator.RedisConnectionData().setUseRedis(false);
+    }
+
+    @Bean("usersDap")
+    public UserDao userDao() {
+        return new UserDao(new HibernateController(getHibernateProperties()));
     }
 }

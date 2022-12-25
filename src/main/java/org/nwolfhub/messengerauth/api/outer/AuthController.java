@@ -19,7 +19,11 @@ public class AuthController {
 
     private static LimitController limitController = new LimitController();
     private static TokenCommunicator tokenCommunicator = new AnnotationConfigApplicationContext(DatabaseConfigurator.class).getBean(TokenCommunicator.class);
-    private static UserDao dao = new UserDao();
+    private static UserDao dao;
+    static {
+        dao = (UserDao) new AnnotationConfigApplicationContext(DatabaseConfigurator.class).getBean("usersDao");
+    }
+    
 
     @GetMapping("/auth/login")
     public static ResponseEntity<String> login(@RequestParam(name = "username", defaultValue = "") String username, @RequestParam(name = "password", defaultValue = "") String password, @RequestHeader(value = "X-Forwarded-For", defaultValue = "0.0.0.0") String ip) {
